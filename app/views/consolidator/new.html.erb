@@ -1,0 +1,14 @@
+<% content_for :titlebar do -%>
+  <h1>New company</h1>
+<% end -%>
+
+
+<%= form_for :company, url: companies_path do |c| %>
+  <p>
+    <%= c.label :name %><br>
+    <%= c.text_field :name %>
+  </p> 
+  <p>
+    <%= c.submit %>
+  </p>
+<% end %>

@@ -1,0 +1,64 @@
+<% content_for :titlebar do -%>
+  <h1><%= link_to "All companies", companies_path %> > <%= @company.name %></h1>
+<% end -%>
+
+<% if @company.subsidiaries.length == 0 %>
+  <h3><%= @company.name %> demographics</h3>
+  <br>
+  <%= form_for :company, url: company_path(@company.id), method: :patch do |f| %>
+    <table>
+    	<tr>
+    		<td></td>
+    		<td>Black</td>
+    		<td>White</td>
+    	</tr>
+    	<tr>
+    		<td>Males</td>
+    		<td><%= f.text_field :black_males %></td>
+    		<td><%= f.text_field :white_males %></td>
+    	</tr>
+    	<tr>
+    		<td>Females</td>
+    		<td><%= f.text_field :black_females %></td>
+    		<td><%= f.text_field :white_females %></td>
+    	</tr>
+    </table>
+    <p>
+      <%= f.submit "Save demographics" %>
+    </p>
+
+  <% end %>
+<% else %>
+  <h3><%= @company.name %> consolidated demographics</h3>
+
+  <table>
+    <tr>
+      <td></td>
+      <td>Black</td>
+      <td>White</td>
+    </tr>
+    <tr>
+      <td>Males</td>
+      <td><%= @company.subsidiaries.sum("black_males") %></td>
+      <td><%= @company.subsidiaries.sum("white_males") %></td>
+    </tr>
+    <tr>
+      <td>Females</td>
+      <td><%= @company.subsidiaries.sum("black_females") %></td>
+      <td><%= @company.subsidiaries.sum("white_females") %></td>
+    </tr>
+  </table>
+<% end %>
+<h4>Immediate subsidiaries</h4>
+   <%= form_for :company, url: company_path(@company.id), method: :patch do |c| %>
+      <ul>
+        <% @companies.each do |company| %>
+          <li>
+            <%= hidden_field_tag "company[subsidiary_ids][]" %>
+            <%= link_to  "#{company.name} #{company.subsidiaries.length > 0 ? "(#{company.subsidiaries.length} subsidiaries)" :"" }", company_path(@company, :id => company.id) %> 
+            <%= check_box_tag "company[subsidiary_ids][]", company.id, @company.subsidiaries.include?(company), :id => "company_subsidiary_ids_#{company.id}" %>
+          </li>
+        <% end %>
+      </ul>
+      <p><%= c.submit "Add to consolidation" %></p>
+    <% end %>

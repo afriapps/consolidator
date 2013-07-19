@@ -1,0 +1,18 @@
+<% content_for :titlebar do -%>
+  <h1>All companies</h1>
+<% end -%>
+
+
+<% if @companies.length > 0 %>
+	<ul>
+	<% @companies.each do |company| %>
+		<li><%= link_to  "#{company.name} #{company.subsidiaries.length > 0 ? "(#{company.subsidiaries.length} subsidiaries)" :"" }", company_path(@company, :id => company.id) %></td>
+	<% end %>
+	</ul>
+<% else %>	
+	No companies found. <%= link_to "Add a company","/companies/new/" %>
+<% end %>
+
+
+
+

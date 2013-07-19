@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  black_males: MyString
+  black_females: MyString
+  white_males: MyString
+  white_females: MyString
+
+two:
+  name: MyString
+  black_males: MyString
+  black_females: MyString
+  white_males: MyString
+  white_females: MyString
